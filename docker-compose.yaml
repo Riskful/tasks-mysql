@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123
+      MYSQL_DATABASE: test
+      MYSQL_USER: root
+    volumes:
+      - ./databases:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    links:
+      - db
+    ports:
+      - 6087:80
+    environment:
+      MYSQL_USERNAME: root
+      MYSQK_ROOT_PASSWORD: 123

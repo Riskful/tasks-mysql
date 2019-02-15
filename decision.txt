@@ -1,0 +1,54 @@
+Таблица `info`
+
+CREATE TABLE `mytest`.`info` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `name` VARCHAR(255) NULL DEFAULT NULL , `desc` TEXT NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
+
+1. Указать базу данных, в которой будет создаваться таблица.
+2. Поле `desc`, переименовать в `description` т.к. это зарезервированное слово.
+
+
+CREATE TABLE `data` (
+
+`id` int(11) NOT NULL auto_increment,
+
+`date` date default NULL,
+
+`value` INT(11) default NULL,
+
+PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
+
+
+Таблица `data`
+
+CREATE TABLE `mytest`.`data` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `date` DATE NULL DEFAULT NULL , `value` INT(11) NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
+
+
+1. Указать базу данных, в которой будет создаваться таблица.
+
+
+Таблица `link`
+
+CREATE TABLE `mytest`.`link` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `data_id` INT(11) NOT NULL, `info_id` INT(11) NOT NULL , PRIMARY KEY (`id`), FOREIGN KEY (`data_id`) REFERENCES `data`(`id`) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY (`info_id`) REFERENCES `info`(`id`) ON DELETE CASCADE ON UPDATE CASCADE ) ENGINE = MyISAM DEFAULT CHARSET=cp1251;
+
+1. Указать базу данных, в которой будет создаваться таблица.
+2. Добавить инкриментируемые идентификатор.
+3. Создать связь с другими таблицами с помощью FOREGN KEY.
+4. Добавить каскадирование, чтобы при удалении записи удалялись связи.
+
+
+Запрос
+
+SELECT `link`.`id`, `link`.`info_id`, `link`.`data_id`, `info`.`name`, `info`.`desc`,`data`.`date`, `data`.`value` FROM `link`
+LEFT JOIN `info` ON `info`.`id` = `link`.`info_id`
+LEFT JOIN `data` ON `data`.`id` = `link`.`data_id`
+
+
+1. Перечислить необходимые поля.
+2. Использование левостороннего внешнего объединения, это решение работает быстрей чем WHERE.
+3. Если большое количество данных не помешало бы указать LIMIT.
+
+
+Общее замечание:
+
+Во всех запросах кодировка cp1251, обычно используется utf8, но если это необходимо для решения задачи, то это не замечание.
